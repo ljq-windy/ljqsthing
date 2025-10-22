@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+	<link rel="stylesheet" href="css/ljq.css">
+    <title>Multi-step Register Form | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-color: #121826;
+      }
+
+      .author-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 16px;
+        color: rgb(55, 65, 81);
+      }
+
+      .author-info a {
+        text-decoration: none;
+      }
+
+      #b2{
+        box-shadow:0 0 0 5px  #a165f595;
+        background-color:rgba(143, 129, 233, 1);
+      }
+      .sma{
+        padding-top: 14px;
+      }
+      .sma input {
+        background-color: #394050;
+        border: 1px solid #ffffff19;
+        text-align: left;
+      }
+    </style>
+  </head>
+        
+  <body>
+    <div class="bigg">
+      <div class="main">
+        <div id="boo">
+          <div class="tab">
+              <ul>
+                <li>Which topics you are interested in?</li>
+                <li class="sma">
+                  <input type="button" value="    Software Development">
+                </li>
+                <li class="sma">
+                  <input type="button" value="    User Experience">
+                </li>
+                <li class="sma">
+                  <input type="button" value="    Graphic Design">
+                </li>
+                <input type="button" value="Continue" class="buttons"/>
+              </ul>
+          </div>
+          <div class="switch">
+            <table>
+              <tr>
+                <th>Step&nbsp;2&nbsp;of&nbsp;&nbsp;3</th>
+                <th>
+                  <div class="an" id="b1"></div>
+                </th>
+                <th>
+                  <div class="an" id="b2"></div>
+                </th>
+                <th>
+                  <div class="an" id="b3"></div>
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <script src="/js/ljq.js"></script>
+  <script>
+    $(".an").mouseenter(
+      function(){
+          $(this).css("box-shadow","0 0 0 5px  #a165f595")
+          $(this).css("background-color","rgba(143, 129, 233, 1)")
+      }
+      ).mouseleave(
+          function(){
+              $(this).css("box-shadow","0 0 0 0 blue")
+              $(this).css("background-color","#212936")
+              $("#b2").css("box-shadow","0 0 0 5px  #a165f595")
+              $("#b2").css("background-color","rgba(143, 129, 233, 1)")
+            }
+      );
+      $(".sma input").mouseenter(
+      function(){
+          $(this).css("background-color","#7F56E9")
+      }
+      ).mouseleave(
+          function(){
+              $(this).css("background-color","#394050")
+            }
+      );
+      $(".buttons").on("click",function(){
+          window.location.replace("http://127.0.0.1:5500/index2.html")
+      })
+      
+  </script>
+</html>
