@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>Guess The Word Game | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .author-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 16px;
+        color: rgb(55, 65, 81);
+      }
+
+      .author-info a {
+        text-decoration: none;
+      }
+      body{
+        background-image: url(/resources/bg-guess-the-word.jpg);
+        background-repeat: no-repeat;
+        /* background-position-x: center; */
+        background-size:100% 800px;
+        /* background-attachment: fixed; */
+      }
+      .biao{
+        background-color: #171E30;
+        height: 360px;
+        width: 320px;
+        margin: 200px auto;
+        border-radius: 10px;
+      }
+      p{
+        padding: 10px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 22px;
+        /* 渐变色字体 */
+        background-clip: text;
+        background-image: -webkit-linear-gradient(left,#9a78ee 10%,#a830c6 90%);
+         /* 字体一定要先透明 */
+        color: rgba(223, 49, 49, 0);
+      }
+      .heads{
+        text-align: center;
+      }
+      .shuru{
+        background-color: #4A5567;
+        width: 280px;
+        height: 50px;
+        border: 0;
+        border-radius: 4px;
+        box-shadow: 0 4px 3px 0 #000000;
+        color: white;
+        font-size: 25px;
+        text-align: center;
+        letter-spacing: 8px;
+      }
+      .mids{
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 20px;
+        padding-bottom: 30px;
+        color: white;
+        font-size: small;
+      }
+      .an{
+        width: 5px;
+        height: 5px;
+        margin-top: 3px;
+        margin-left: 6px;
+        border-radius: 10px;
+        background-color: #b765ed;
+        border: 0;
+      }
+      .an1{
+        text-align: center;
+        width: 32px;
+        height: 32px;
+        margin-top: 3px;
+        margin-left: 8px;
+        background-color: #b765ed00;
+        border: 2px solid rgba(188, 188, 188, 0.553);
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        caret-color: transparent;
+      }
+      .lefts{
+        float: left;
+      }
+      .rights{
+        float: right;
+      }
+      .mis{
+        letter-spacing: 5px;
+      }
+      .botts{
+        text-align: center;
+        padding-left: 30px;
+        padding-top: 50px;
+      }
+      .dis{
+        padding-left: 15px;
+      }
+      .an2{
+        margin-top: 40px;
+        margin-left: 10px;
+        width: 130px;
+        height: 40px;
+        border-radius: 8px;
+        color: white;
+        border: 0;
+        background-color: #C951E7;
+        box-shadow: 0 5px 0 0 rgba(152, 84, 171, 0.815);
+      }
+      /* 容器 */
+      /* display: inline-block收缩包裹 input */
+      .input-wrapper {
+        position: relative;
+        display: inline-block; 
+      }
+      /* 当容器内部的任意元素。。。 */
+      /* ::after不用改 HTML 结构，就能给元素加装饰、加样式 */
+      .input-wrapper:focus-within::after {
+        content: '';
+        position: absolute;
+        left: 14px; 
+        bottom: 4px; 
+        width: 100%;
+        height: 3px;
+        width: 20px;
+        background-color: #ffffff; 
+        animation: blink 1s infinite;
+      }
+      /* 闪烁动画 */
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      .an1 {
+        outline: none; /* 去掉浏览器默认聚焦边框 */
+      }
+      .an1:focus{
+        border-color: #C951E7;
+      }
+      @media screen and (max-width:1043.2px){
+        body{
+          background-size:auto 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+      <div class="biao">
+        <p>Word Scramblle</p>
+        <div class="heads">
+          <input type="text" class="shuru" pattern="^[A-Za-z]+$" name="inputs" readonly: true>
+        </div>
+        <div class="mids">
+          <div class="lefts">
+            <table>
+              <tr id="aaa">
+                <th>
+                  <span>Tries(0/5):</span>
+                </th>
+              </tr>
+            </table>
+          </div>
+          <div class="rights" id="miss">
+            <span style="margin-right: 40px;">Mistakes:</span>
+          </div>
+        </div>
+        <form action="" method="get">
+          <div class="botts">
+              <table id="er">
+              <tr id="inputRow">
+                
+              </tr>
+            </table>
+          </div>
+          <div class="dis">
+              <input type="button" class="an2" value="Random" id="ran" onclick="selectRandomWord()">
+              <input type="reset" class="an2" value="Reset">
+          </div>
+        </form>
+      </div>
+  </body>
+  <script src="resources/jquery-3.3.1.min.js"></script>
+  <script>
+    $(function(){
+      // //对几个input限定只能输入英文
+      // let shuruinit=$(".shuru").val().replace(/[^A-Za-z]/g, '').toUpperCase();
+      // let aninit=$(".an1").val().replace(/[^A-Za-z]/g, '').toUpperCase();
+      // $(".shuru").val(shuruinit)
+      // $(".an1").val(aninit)
+      initInputEvents()
+      bindInputEvents()
+      selectRandomWord()
+      // let isFirstRun = true;
+      // // 2.第一次运行：跳过方法，更新标记
+      // if (isFirstRun) {
+      //   isFirstRun = false;
+      //   return;
+      // }else{
+      // // 3.非第一次运行：执行方法
+      //   checks()
+      //   //createInputs() 会重新生成输入框（清空内容）紧接着调用 checks()
+      //   //此时输入框为空，导致 yhsr 始终为空。
+      // }
+      // runs()
+    })
+
+    let currentWord = "";
+    let letterInputs = document.querySelectorAll('.an1');
+    // 初始化输入框事件
+    function initInputEvents() {
+        // 给每个input输入框绑定输入事件
+        letterInputs.forEach((input, index) => {
+        // 监听输入内容变化（支持键盘输入、粘贴）
+        input.addEventListener('input', function() {
+          // 不是最后一个输入框则跳转到下一个
+          if (index < letterInputs.length - 1) {
+            letterInputs[index + 1].focus(); // 聚焦下一个输入框
+          }
+        });
+        //keydown 是前端开发中常用的键盘事件，属于 JavaScript 原生事件体系的核心成员，用于监听 “键盘按键被按下” 的行为。
+        // 其核心特点与关键信息如下：
+        // 触发时机：当用户按下任意键盘按键（包括字母、数字、功能键如 Ctrl/Shift、方向键等）时，按键刚被按下的瞬间触发，且若按键被持续按住，会重复触发（触发频率由系统键盘设置决定）。
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Backspace' && !this.value && index > 0) {
+            letterInputs[index - 1].focus(); // 无内容时按删除键，回退到上一个
+          }
+        });
+      });
+
+    }
+   
+
+    // 创建输入框
+    function createInputs() {
+      const inputRow = document.getElementById('inputRow');
+      inputRow.innerHTML = ''; // 清空现有内容
+      let inputHtml = ''; // 用模板字符串拼接所有输入框HTML
+
+      // 循环生成输入框HTML
+      for (let i = 0; i < fonts; i++) {
+        inputHtml += `
+          <th>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                class="an1" 
+                maxlength="1" 
+                pattern="[A-Za-z]" 
+                name="one${i}" 
+                data-index="${i}"
+              >
+            </div>
+          </th>
+        `;
+      }
+
+      //一次性插入所有输入框
+      inputRow.innerHTML = inputHtml;
+
+      //获取所有输入框并存储到数组
+      letterInputs = Array.from(inputRow.querySelectorAll('.an1'));
+
+      //绑定事件（复用之前的事件逻辑）
+      initInputEvents();
+      //创建输入框后，启动输入监听
+      watchInputCompletion();
+      //找到错误字母
+      // misfonts();
+      // 聚焦第一个输入框
+      if (letterInputs.length > 0) {
+        letterInputs[0].focus();
+      }
+    }
+
+    const words = ["tea", "happy", "sad", "sorrow","milk","sunny"];
+    let fonts;
+    // 1. 定义标记变量，记录是否是第一次运行
+    function selectRandomWord(){
+        const luan=[...words];
+        const randomIndex = Math.floor(Math.random() * words.length);
+        const selectedWord = words[randomIndex];
+        currentWord = words[randomIndex]; 
+        // console.log("正确："+currentWord)
+        // console.log(selectedWord);
+        const a=selectedWord.split('');
+        for(let i = a.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i],a[j]]=[a[j],a[i]];
+        }
+        const scrambledWord = a.join(''); // 添加分号
+        $('.shuru').val(scrambledWord);
+        fonts=a.length
+        createInputs()
+    }
+    
+    let nums=0
+    //检查字母和拼写
+    function checks(){
+      let yhsr=''
+      for(let i=0;i<currentWord.length;i++){
+        yhsr+=$('.an1').eq(i).val();
+      }
+      // console.log("用户输入"+yhsr)
+      if (yhsr.length < fonts) {
+        alert("Please enter complete!")
+        return;
+      }
+      if (yhsr.length == fonts) {
+          if (yhsr.toLowerCase() == currentWord.toLowerCase()) {
+          alert("Correct!");
+          window.location.reload();
+        } else {
+          nums++;
+          misnum();
+          alert("Incorrect, try again!");
+        }
+      }
+      if (nums>=6) {
+        alert("Fail!")
+        window.location.reload();
+      }
+      misfonts()
+    } 
+
+    //错误计数
+    function misnum() {
+      const inputRow = document.getElementById('aaa');
+      inputRow.innerHTML = ''; // 清空现有内容
+      let inputHtml = ''; // 用模板字符串拼接所有输入框HTML
+      let heads=`
+          <th>
+            <span>Tries(${nums}/5):</span>
+          </th>
+      `;
+      for (let index = 0; index < nums; index++) {
+        inputHtml += `
+          <th>
+            <div class="an" id="an${nums}"></div>
+          </th>
+      `;
+      }
+      // 插入所有div
+      inputRow.innerHTML = heads+inputHtml;
+    }
+
+    //如果所有框满了，则运行checks（）
+    function runs() {
+      // 1. 统计已填写的输入框数量（去空格后长度为1的才算有效）
+      let filledCount = 0;
+      letterInputs.forEach(input => {
+        const val = input.value.replace(/\s+/g, '');
+        if (val.length === 1) {
+          filledCount++;
+        }
+      });
+      // console.log(filledCount)
+      // 2. 若已填写数量等于总输入框数量，说明全部填满
+      if (filledCount === letterInputs.length) {
+        checks();
+      }
+    }
+    
+    // 监听输入，判断是否完成所有输入
+    function watchInputCompletion() {
+      // 给每个输入框绑定输入事件
+      letterInputs.forEach(input => {
+        input.addEventListener('input', function() {
+          // 实时过滤：只保留字母、去空格、转大写
+          this.value = this.value.replace(/[^A-Za-z]/g, '').replace(/\s+/g, '');
+          
+          // 检查是否所有输入框都已填写（每个框必须有1个字母）
+          const isAllFilled = Array.from(letterInputs).every(input => {
+            const val = input.value.replace(/\s+/g, '');
+            return val.length === 1; // 每个输入框必须填写1个字母
+          });
+
+          // 如果全部填写完成，自动触发检查
+          if (isAllFilled) {
+            checks();
+          }
+        });
+
+        // 处理退格键（删除内容后可能需要取消“已完成”状态）
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Backspace') {
+            // 若删除后当前框为空，无需做额外操作，等待用户重新输入
+          }
+        });
+      });
+    }
+
+    // 在绑定输入事件时添加字母过滤逻辑
+  function bindInputEvents() {
+    document.querySelectorAll('.an1').forEach(input => {
+      // 阻止非字母键的输入（从源头限制）
+      input.addEventListener('keydown', function(e) {
+        // 允许字母键（a-z、A-Z）、退格键（Backspace）、Tab键（切换焦点）
+        if (!/^[a-z]$/.test(e.key) && e.key !== 'Backspace') {
+          e.preventDefault(); // 阻止非字母键输入
+        }
+      });
+    });
+  }
+
+  //字母顺序排查
+  function compareArrays(userInput, correctWord) {
+    // 1. 转为小写数组，统一对比（不区分大小写）
+    const userArr = userInput.toLowerCase().split('');
+    const correctArr = correctWord.toLowerCase().split('');
+    let results = [];// 存储每个字母的纠错结果
+    // 2. 统计正确单词中每个字母的剩余可匹配次数（处理重复字母）
+    const remainingCounts = {};
+    correctArr.forEach(letter => {
+      remainingCounts[letter] = (remainingCounts[letter] || 0) + 1;
+    });
+
+    // 3. 第一步：标记“位置完全正确”的字母
+    userArr.forEach((letter, index) => {
+      // 初始化结果（默认字母错误）
+      results.push({ letter: userInput[index] || '', status: 'wrong' });
+
+      // 若字母存在且位置匹配，标记为正确
+      if (letter && letter === correctArr[index] && remainingCounts[letter] > 0) {
+        results[index].status = 'correct';
+        remainingCounts[letter]--; // 减少可匹配次数，避免重复判断
+      }
+    });
+
+    // 4. 第二步：标记“字母正确但位置错误”的字母
+    userArr.forEach((letter, index) => {
+      // 跳过已标记为“位置正确”的字母
+      if (results[index].status === 'correct'){
+        return;
+      } 
+
+      // 若字母存在且仍有可匹配次数，标记为位置错误
+      if (letter && remainingCounts[letter] > 0) {
+        results[index].status = 'wrong-position';
+        remainingCounts[letter]--; // 减少可匹配次数
+      }
+    });
+    for (let index = 0; index < results.length; index++) {
+      if(results[index].status =='correct'){
+          results.splice(index, 1);
+      }
+    }
+    let newarr=[];
+    for (let i = 0; i < results.length; i++) {
+      newarr+=results[i].letter
+    }
+     let inputHtml2= `
+            <span class="mis">${newarr}</span>
+     `;
+    if (newarr!='') {
+      return newarr;
+    }
+  }
+  //错误字母筛查
+  function misfonts(){
+    let result = '';
+    $('.an1').each(function() {
+      result += $(this).val().trim();
+    });
+    // 获取打乱后的单词（.shuru框的值）
+    const scrambledWord = $('.shuru').val().trim(); // 去空处理
+    // 存储错误字母（用户输入了但正确单词中不存在的字母）
+    let wrongLetters = [];
+    // 遍历用户输入的每个字母，检查是否在正确单词中
+    for (let i = 0; i < result.length; i++) {
+       const letter = result[i];
+    // 如果正确单词中不包含该字母，且未记录，字母非空,则错误
+       if (letter && !scrambledWord.includes(letter) && !wrongLetters.includes(letter)) {
+         wrongLetters.push(letter);
+      }
+    }
+    // console.log("错误字母："+wrongLetters)
+    const inputRow = document.getElementById('miss');
+    inputRow.innerHTML = ''; // 清空现有内容
+    let inputHtml = ''; // 用模板字符串拼接所有输入框HTML
+    let inputHtml1 = '';
+    if (wrongLetters!=null) {
+      inputHtml= `
+        <span>Mistakes:</span>
+        <span class="mis">${wrongLetters}</span>
+    `;
+    }else{
+       inputHtml= `
+        <span style="margin-right: 40px;">Mistakes:</span>
+    `;
+    }
+      // 统计正确单词中每个字母的出现次数,防止重复
+      const letterCount = {};
+      let letters;
+      currentWord.split('').forEach(letter => {
+        letterCount[letter] = (letterCount[letter] || 0) + 1;
+      });
+      // 检查用户输入的字母是否过量
+      for (let i = 0; i < result.length; i++) {
+        letters = result[i].toLowerCase();
+        if (letterCount[letters] > 0) {
+          letterCount[letters]--; // 可用次数减1
+        } else {
+          inputHtml1= `
+            <span class="mis">${letters}</span>
+        `;
+          console.log(`字母 ${letters} 过量，为错误字母`);
+        }
+      }
+      let newarr=compareArrays(result,currentWord).split("");
+      let inputHtml2= `
+            <span class="mis">${newarr}</span>
+     `;
+      // console.log(compareArrays(result,currentWord))
+      // 插入所有div(防止字母重复)
+        let myarr = []
+        for(let i=0;i<wrongLetters.length;i++){
+          myarr.push(wrongLetters[i])
+        }
+        myarr.push(letters)
+        for(let i=0;i<newarr.length;i++){
+          myarr.push(newarr[i])
+        }
+        const jieguo = [...new Set(myarr)];
+        console.log(jieguo)
+        let inputHtml3= `
+            <span>Mistakes:</span>
+            <span class="mis">${jieguo}</span>
+        `;
+        inputRow.innerHTML = inputHtml3;
+
+  }
+
+  </script>
+</html>
