@@ -32,6 +32,7 @@
         text-decoration: none;
       }
       body{
+        height: 100vh;
         background-image: url(/resources/bg-guess-the-word.jpg);
         background-repeat: no-repeat;
         /* background-position-x: center; */
@@ -41,9 +42,10 @@
       .biao{
         background-color: #171E30;
         height: 360px;
-        width: 320px;
+        width: 360px;
         margin: 200px auto;
         border-radius: 10px;
+        text-align: center;
       }
       p{
         padding: 10px;
@@ -86,6 +88,15 @@
         margin-left: 6px;
         border-radius: 10px;
         background-color: #b765ed;
+        border: 0;
+      }
+      .an0{
+        width: 5px;
+        height: 5px;
+        margin-top: 3px;
+        margin-left: 6px;
+        border-radius: 10px;
+        background-color: #cecece6f;
         border: 0;
       }
       .an1{
@@ -169,7 +180,7 @@
   <body>
     
       <div class="biao">
-        <p>Word Scramblle</p>
+        <img src="resources/word-scramblle-logo.svg" alt="" style="padding: 8px;height: 40px;">
         <div class="heads">
           <input type="text" class="shuru" pattern="^[A-Za-z]+$" name="inputs" readonly: true>
         </div>
@@ -180,6 +191,21 @@
                 <th>
                   <span>Tries(0/5):</span>
                 </th>
+                <th>
+                  <div class="an0"></div>
+                </th>
+                <th>
+                  <div class="an0"></div>
+                </th>
+                <th>
+                  <div class="an0"></div>
+                </th>
+                <th>
+                  <div class="an0"></div>
+                </th>
+                <th>
+                  <div class="an0"></div>
+                </th>
               </tr>
             </table>
           </div>
@@ -187,7 +213,6 @@
             <span style="margin-right: 40px;">Mistakes:</span>
           </div>
         </div>
-        <form action="" method="get">
           <div class="botts">
               <table id="er">
               <tr id="inputRow">
@@ -197,34 +222,16 @@
           </div>
           <div class="dis">
               <input type="button" class="an2" value="Random" id="ran" onclick="selectRandomWord()">
-              <input type="reset" class="an2" value="Reset">
+              <input type="reset" class="an2" value="Reset" onclick="resetGame()">
           </div>
-        </form>
       </div>
   </body>
   <script src="resources/jquery-3.3.1.min.js"></script>
   <script>
     $(function(){
-      // //对几个input限定只能输入英文
-      // let shuruinit=$(".shuru").val().replace(/[^A-Za-z]/g, '').toUpperCase();
-      // let aninit=$(".an1").val().replace(/[^A-Za-z]/g, '').toUpperCase();
-      // $(".shuru").val(shuruinit)
-      // $(".an1").val(aninit)
       initInputEvents()
       bindInputEvents()
       selectRandomWord()
-      // let isFirstRun = true;
-      // // 2.第一次运行：跳过方法，更新标记
-      // if (isFirstRun) {
-      //   isFirstRun = false;
-      //   return;
-      // }else{
-      // // 3.非第一次运行：执行方法
-      //   checks()
-      //   //createInputs() 会重新生成输入框（清空内容）紧接着调用 checks()
-      //   //此时输入框为空，导致 yhsr 始终为空。
-      // }
-      // runs()
     })
 
     let currentWord = "";
@@ -237,7 +244,12 @@
         input.addEventListener('input', function() {
           // 不是最后一个输入框则跳转到下一个
           if (index < letterInputs.length - 1) {
-            letterInputs[index + 1].focus(); // 聚焦下一个输入框
+            setTimeout(() => {
+              // 跳转前再次检查当前输入框是否仍有值（避免用户快速删除的情况）
+              if (this.value) {
+                letterInputs[index + 1].focus();// 聚焦下一个输入框
+              }
+            }, 200);
           }
         });
         //keydown 是前端开发中常用的键盘事件，属于 JavaScript 原生事件体系的核心成员，用于监听 “键盘按键被按下” 的行为。
@@ -251,7 +263,26 @@
       });
 
     }
-   
+   function resetGame() {
+      // 重置错误次数
+      nums = 0;
+      document.getElementById('aaa').innerHTML = '<th><span>Tries(0/5):</span></th>';
+      
+      // 重置错误字母显示
+      document.getElementById('miss').innerHTML = `<span style="margin-right: 40px;">Mistakes:</span>
+      
+      
+      
+      `;
+      
+      // 清空输入框并聚焦第一个
+      letterInputs.forEach(input => {
+        input.value = '';
+      });
+      if (letterInputs.length > 0) {
+        letterInputs[0].focus();
+      }
+    }
 
     // 创建输入框
     function createInputs() {
@@ -350,20 +381,32 @@
       const inputRow = document.getElementById('aaa');
       inputRow.innerHTML = ''; // 清空现有内容
       let inputHtml = ''; // 用模板字符串拼接所有输入框HTML
+      let inputHtml1 = ''; // 用模板字符串拼接所有输入框HTML
       let heads=`
           <th>
             <span>Tries(${nums}/5):</span>
           </th>
       `;
+      let h=4;
       for (let index = 0; index < nums; index++) {
         inputHtml += `
           <th>
-            <div class="an" id="an${nums}"></div>
+            <div class="an"></div>
+          </th>
+      `;
+      
+      }
+      if (nums<=4) {
+       for (let index = 0; index < 5-nums; index++) {
+        inputHtml1 += `
+          <th>
+            <div class="an0"></div>
           </th>
       `;
       }
+    }
       // 插入所有div
-      inputRow.innerHTML = heads+inputHtml;
+      inputRow.innerHTML = heads+inputHtml+inputHtml1;
     }
 
     //如果所有框满了，则运行checks（）
@@ -412,7 +455,7 @@
       });
     }
 
-    // 在绑定输入事件时添加字母过滤逻辑
+  // 在绑定输入事件时添加字母过滤逻辑
   function bindInputEvents() {
     document.querySelectorAll('.an1').forEach(input => {
       // 阻止非字母键的输入（从源头限制）
@@ -462,21 +505,14 @@
         remainingCounts[letter]--; // 减少可匹配次数
       }
     });
-    for (let index = 0; index < results.length; index++) {
-      if(results[index].status =='correct'){
-          results.splice(index, 1);
-      }
-    }
-    let newarr=[];
-    for (let i = 0; i < results.length; i++) {
-      newarr+=results[i].letter
-    }
-     let inputHtml2= `
-            <span class="mis">${newarr}</span>
-     `;
-    if (newarr!='') {
-      return newarr;
-    }
+     // 过滤掉完全正确的字母（解决 splice 索引偏移问题：用 filter 生成新数组）
+    const filteredResults = results.filter(item => item.status !== 'correct');
+
+    // 提取剩余字母（错误或位置错误）
+    const newarr = filteredResults.map(item => item.letter.toLowerCase()).join('');
+
+    // 确保返回值始终为字符串（空字符串而非 undefined）
+    return newarr;
   }
   //错误字母筛查
   function misfonts(){
