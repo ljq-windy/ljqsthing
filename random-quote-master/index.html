@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>Random Quote | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-color: #111629;
+      }
+      .biao{
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 15%;
+        width: 600px;
+        height: 300px;
+        background-color: #20293A;
+        border-radius: 15px;
+        background-image: url(resources/bg-image-random-quote.png);
+        background-repeat: no-repeat;
+        background-position:100% 100%;
+      }
+      .bo{
+        text-align: center;
+        margin: 10px auto;
+        margin-right: 10px;
+        background-color: #20293A;
+        width:120px;
+        height: 35px;
+        float: left;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        /* 让容器内的行内元素垂直居中对齐 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+      .bo:hover{
+        background-color: #203256;
+      }
+      .bo img{
+        vertical-align: middle; /* 辅助对齐（flex 已足够，可省略） */
+      }
+      .buts{
+        margin: 0 auto;
+        width: 260px;
+      }
+      h2{
+        margin-top: 30px;
+        color: white;
+        font-weight: 400;
+      }
+      h1{
+        padding-top: 45px;
+        color: white;
+      }
+      button{
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 6px;
+        color: #8186C0;
+        background-color: #11162900;
+        border: 1px solid #8186C0;
+        border-radius: 15px;
+        cursor: text;
+      }
+      @media screen and (max-width:725.6px){
+          .biao{
+            width: 90%;
+            margin-top: 40%;
+            height: 30%;
+          }
+           h1{
+            padding-top: 15px;
+          }
+          h2{
+            margin-top: 10px;
+          }
+          button{
+           margin-top: 5px;
+            padding: 4px;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="biao" id="fixes">
+      <h1>Wayne Gretzky</h1>
+      <button>Famous Quotes</button>
+      <button>Incentives</button>
+      <h2>You miss 100% of the shots you don't take.</h2>
+    </div>
+    <div class="buts">
+      <div class="bo" id="b1" onclick="Random()">
+        <span>Random</span>
+        <img src="resources/regroup.svg" alt="">
+      </div>
+      <div class="bo" id="b2" onclick="shareQuote()">
+        <span>Share</span>
+        <img src="resources/link.svg" alt="">
+      </div>
+    </div>
+  </body>
+  <script src="resources/jquery-3.3.1.min.js"></script>
+  <script>
+    const fquote=[
+      ["The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.","Steve Jobs","Insist"],
+      ["In three words I can sum up everything I've learned about life: it goes on.","Robert Frost","Philosophy"],
+      ["Be the change that you wish to see in the world.","Mahatma Gandhi","Incentives"],
+      ["Success is not final, failure is not fatal: it is the courage to continue that counts.","Winston Churchill","Philosophy"],
+      ["The greatest glory in living lies not in never falling, but in rising every time we fall.","Nelson Mandela","Incentives"]
+    ];
+    function Random() {
+      let fq=[...fquote];
+      const inputRow = document.getElementById('fixes');
+      inputRow.innerHTML = ''; // 清空现有内容
+      let inputHtml = ''; // 用模板字符串拼接所有输入框HTML
+      //打乱
+      for (let i = 0; i < fq.length; i++) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [fq[i],fq[j]]=[fq[j],fq[i]];
+      }
+      console.log(fq);
+      // 生成随机数
+      // const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+      let nums = Math.floor(Math.random() * (5)) + 0;
+      inputHtml=`
+        <h1>${fq[nums][1]}</h1>
+        <button>Famous Quotes</button>
+        <button>${fq[nums][2]}</button>
+        <h2>${fq[nums][0]}</h2>
+      `;
+      inputRow.innerHTML = inputHtml;
+    }
+    // 实现分享功能
+    function shareQuote() {
+      // 检查浏览器是否支持分享 API
+      if (navigator.share) {
+        // 调用原生分享 API，传入分享内容
+        navigator.share({
+          url: window.location.href // 分享当前页面链接
+        })
+        .then(() => console.log('分享成功'))
+        .catch((error) => console.log('分享失败:', error));
+      } else {
+        // 浏览器不支持分享 API 时的降级处理
+        alert('您的浏览器不支持分享功能，请手动复制分享内容');
+      }
+    }
+  </script>
+</html>

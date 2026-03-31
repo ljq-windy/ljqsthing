@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>QR code generator | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-image: url(resources/qa-bg.jpg);
+      }
+      .mids{
+        text-align: center;
+      }
+      .sheads{
+        margin: 60px auto;
+      }
+      .cricle{
+        margin: 40px auto;
+        border-radius: 400px;
+        width: 300px;
+        height: 300px;
+        background-color: #282E3E;
+        padding: 1px; 
+      }
+      .buts{
+        margin: 20px auto;
+        height: 44px;
+        width: 380px;
+      }
+      .sbut{
+        background-color: #273FA9;
+        color: white;
+        border: 0;
+        line-height: 38px;
+        height: 40px;
+        width: 160px;
+        border-radius: 6px;
+        float: left;
+        margin-top: 50px;
+        /* 让容器内的行内元素垂直居中对齐 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+      .sbut:first-child{
+        margin-right: 10px;
+        margin-left: 30px;
+      }
+      .ma{
+        margin: 30px auto;
+        padding-top: 8px;
+        background-color: #fff;
+        width: 240px;
+        height: 240px;
+        border-radius: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mids">
+      <div class="sheads">
+        <img src="resources/Logo-small.svg" alt="">
+        <div class="cricle">
+            <div class="ma">
+
+            </div>
+        </div>
+        <div class="buts">
+            <div class="sbut" id="pic">Download<img src="resources/link_alt.svg" alt=""></div>
+            <div class="sbut" onclick="shareQuote()">Share<img src="resources/Load_circle_duotone.svg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="resources/jquery-3.3.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script>
+    $(function(){
+      const url = getUrlParam();
+      if (url) {
+        // 生成二维码
+        generateQRCode(url);
+      } else {
+        alert('No URL provided!');
+      }
+    })
+    function getUrlParam() {
+      const params = new URLSearchParams(window.location.search.slice(1));
+      return decodeURIComponent(params.get('url'));
+    }
+
+    // 生成二维码
+    function generateQRCode(url) {
+      const container = $('.ma');
+      // 清空
+      container.empty();
+
+      // 使用 qrcode.js 生成二维码
+      QRCode.toCanvas(url, {
+        width: 220, // 二维码宽度（减去容器内边距）
+        margin: 1,  // 二维码边距
+        color: {
+          dark: '#000000', // 二维码颜色
+          light: '#ffffff'  // 背景色
+        }
+      }, (error, canvas) => {
+        if (error) {
+          console.log('生成二维码失败：', error);
+          alert('Failed to generate QR code!')
+          return;
+        }
+        // 将生成的 canvas 加入容器
+        container.append(canvas);
+        $('#pic').click(()=>{
+            pics(canvas,'qrCode');
+        })
+      });
+     
+    }
+
+    function pics(canvas, fileName) {
+        try {
+            // 1. 将 Canvas 转为图片 URL（base64 格式）
+            const imageUrl = canvas.toDataURL('image/png'); // 可选 'image/jpeg'
+
+            // 2. 创建隐藏的 <a> 标签用于下载
+            const $a = $('<a>').attr({
+            href: imageUrl,
+            download: `${fileName}.png` // 文件名（可自定义）
+            }).hide();
+
+            // 3. 添加到页面并触发点击下载
+            $('body').append($a);
+            $a[0].click(); // 用原生方法触发点击
+
+            // 4. 清理临时元素
+            setTimeout(() => $a.remove(), 100);
+        } catch (err) {
+            console.error('保存失败：', err);
+            alert('图片保存失败，请重试');
+        }
+    }
+
+    
+    // 实现分享功能
+    function shareQuote() {
+      // 检查浏览器是否支持分享 API
+      if (navigator.share) {
+        // 调用原生分享 API，传入分享内容
+        navigator.share({
+          url: window.location.href // 分享当前页面链接
+        })
+        .then(() => console.log('分享成功'))
+        .catch((error) => console.log('分享失败:', error));
+      } else {
+        // 浏览器不支持分享 API 时的降级处理
+        alert('您的浏览器不支持分享功能，请手动复制分享内容');
+      }
+    }
+  </script>
+</html>

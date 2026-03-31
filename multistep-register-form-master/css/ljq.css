@@ -1,0 +1,94 @@
+    .main {
+        margin: 50px  auto;
+        padding-top: 10px;
+        padding-left: 10px;
+        text-align: center;
+        width: 800px;
+        height: 500px;
+        position: relative;
+        background-image: url("/resources/blur-radial.png");
+        background-repeat: no-repeat;
+      }
+      .tab {
+        margin: 1px auto;
+        padding-top: 1px;
+        text-align: center;
+        width: 551px;
+        height: 381px;
+        background-color: #212936;
+        border-radius: 20px;
+        position: relative;
+        top: 1px;
+      }
+      #boo {
+        margin: 150px auto;
+        width: 554px;
+        height: 554px;
+        border-radius: 20px;
+        background-image: -webkit-linear-gradient(left top,#c6cdf0 1px,#121826 120px);
+      }
+      .tab li {
+        color: white;
+        list-style: none;
+        text-align: left;
+        line-height: 45px;
+        font-size: 14px;
+      }
+      .tab ul {
+        margin: 40px;
+        text-align: center;
+      } 
+      .tab li:first-child {
+        font-size: 24px;
+        line-height: 50px;
+      }
+       
+      li input {
+        height: 40px;
+        width: 96%;
+        border-radius: 5px;
+        background-color: #00000000;
+        color: white;
+        border: 1px solid rgba(200, 200, 200, 0.314);
+      }
+      li p {
+        margin-bottom: -12px;
+      }
+      .buttons {
+        margin-top: 35px;
+        border-radius: 20px;
+        height: 40px;
+        width: 180px;
+        border: 0 solid;
+        color: #ffffff;
+        background-image: -webkit-linear-gradient(top,#9a78ee 10%,#6230c6 90%);
+      }
+      .switch {
+        color: rgba(255, 255, 255, 0.704);
+      }
+      table {
+        margin: 10px auto;
+      }
+      th {
+        font-weight: 300;
+        font-size: 14px;
+      }
+      .an{
+        width: 10px;
+        height: 10px;
+        margin-left: 10px;
+        border-radius: 10px;
+        background-color: #212936;
+        border: 0;
+      }
+      @media screen and (max-width:816px){
+        .tab{
+          width: 99.5%;
+        }
+         #boo {
+            width: 80%;
+          }
+        .main{
+            width: 100%;
+        }
+      }

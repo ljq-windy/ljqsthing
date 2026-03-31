@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <!-- 简化版：只保留核心音频和播放按钮 -->
+  <audio id="testPlayer" preload="auto">
+    <source src="/resources/lost-in-city-lights-145038.mp3" type="audio/mpeg">
+  </audio>
+  <button id="testBtn">播放</button>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $('#testBtn').click(function() {
+      const player = $('#testPlayer')[0];
+      if (player.paused) {
+        player.play().catch(err => {
+          console.log('播放失败：', err);
+          alert('错误：' + err.message);
+        });
+        $(this).text('暂停');
+      } else {
+        player.pause();
+        $(this).text('播放');
+      }
+    });
+
+    // 查看音频加载状态
+    $('#testPlayer').on('error', function(e) {
+      console.log('音频加载错误：', e);
+    });
+  </script>
+</body>
+</html>

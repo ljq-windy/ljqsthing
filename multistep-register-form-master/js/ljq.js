@@ -1,0 +1,9 @@
+$("#b1").on("click",function(){
+    window.location.replace("http://127.0.0.1:5500/index.html")
+})
+$("#b2").on("click",function(){
+    window.location.replace("http://127.0.0.1:5500/index1.html")
+})
+$("#b3").on("click",function(){
+    window.location.replace("http://127.0.0.1:5500/index2.html")
+})

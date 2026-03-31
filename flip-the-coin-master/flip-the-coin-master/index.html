@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>Flip the coin | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-color: #404A65;
+      }
+
+      .author-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 16px;
+        color: rgb(0, 0, 0);
+      }
+
+      .author-info a {
+        text-decoration: none;
+      }
+      
+      .tou {
+          /* background-color: aqua; */
+          margin-top: 50px;
+      }
+      .tou p {
+        color: white;
+        font-size: 60px;
+        font-weight: 1000;
+        text-align: center;
+        text-shadow:  0px 0px 15px rgb(0, 0, 0);
+      }
+      .head1 {
+        /* background-color: #30d294; */
+      }
+       .head1 p {
+        color: #9DA2B0;
+        font-size: 20px;
+        font-weight: 500;
+        text-align: center;
+        padding-top: 15px;
+      }
+      .pic {
+        /* background-color: aqua; */
+        text-align: center;
+        margin-top: 100px;
+      }
+      .pic .tou {
+        height: 200px;
+      }
+      .font p {
+        color: white;
+        font-size: 23px;
+        padding: 3%;
+        font-weight: 400;
+      }
+      #pbehind {
+        display: none;
+      }
+      #fbehind {
+        display: none;
+      }
+      .but {
+        text-align: center;
+      }
+      .but button {
+        border: none;
+        background-color: #267EC5;
+        padding: 10px;
+        color: white;
+        border-radius: 5px;
+        padding-left: 3%;
+        padding-right: 3%;
+        box-shadow: 0px 3px 0px 0px #1e6298;
+      }
+      button:hover {
+        background-color: #82aed1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+
+    Flip a Coin Game
+    Press the coin or the button to flip the coin
+    Head
+    Tail
+    Random
+  
+    -->
+    <div class="tou">
+      <p>Filp the coin</p>
+    </div>
+    <div class="head1">
+      <p>Press the coin or the button to flip the coin</p>
+    </div>
+    <div class="pic">
+      <div class="top">
+       <img src="./resources/heads.svg" alt="coin" id="pfront">
+       <img src="./resources/tails.svg" alt="coin" id="pbehind">
+      </div>
+      <div class="mid">
+       <img src="./resources/shadow.svg" alt="shadow">
+      </div>
+      <div class="font">
+        <p id="ffront">Head</p>
+        <p id="fbehind">Tail</p>
+      </div>
+    </div>
+    <div class="but">
+      <button>RANDOM</button>
+    </div>
+    <!-- <div class="author-info">
+      Coded by <a href="#">Your Name Here</a> | Challenge by
+      <a href="https://www.devchallenges.io?ref=challenge" target="_blank"
+        >devChallenges.io</a
+      >.
+    </div> -->
+  </body>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/taking.js"></script>
+</html>

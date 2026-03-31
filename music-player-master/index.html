@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>Music Player | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-image: url(/resources/gradient-bg.jpg);
+        background-size: cover;
+      }
+      .mids{
+        margin: 6% auto;
+        background-color: #292136;
+        height: 580px;
+        width: 400px;
+        border-radius: 18px;
+      }
+      .smids{
+        padding-top: 25px;
+        text-align: center;
+        margin: 10px auto;
+        /* background-color: aqua; */
+        /* width: 360px; */
+      }
+      img{
+        height: 324px;
+        border-radius: 10px;
+      }
+      .sfonts{
+        text-align: center;
+        color: white;
+      }
+      p{
+        color: #ffffff7c;
+      }
+      .xian{
+        height: 8px;
+        width: 85%;
+        margin: 30px auto;
+        background-color: #fff;
+        border-radius: 10px;
+      }
+      .slefts{
+        float: left;
+        color: #ffffff7c;
+        width: 50%;
+        margin-left: -40px;
+      }
+      .srights{
+        float: right;
+        color: #ffffff7c;
+        width: 50%;
+        margin-right: -40px;
+      }
+      .colors{
+        background-color: #C93B77;
+        height: 100%;
+        width: 0px;
+        border-radius: 3px 0 0 3px;
+      }
+      .pics{
+        height: 100px;
+      }
+      .plefts{
+        width: 60px;
+        float: left;
+        margin-left: 80px;
+      }
+      .prights{
+        width: 60px;
+        float: right;
+        margin-right: 80px;
+      }
+      .pmids{
+        height: 60px;
+        width: 60px;
+        background-color: #C93B77;
+        float: left;
+        margin-left: 30px;
+        border-radius: 50px;
+      }
+      .pics img{
+        margin-top: 5px;
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mids">
+      <div class="smids">
+        <img src="/resources/cover-1.jpg" alt="">
+      </div>
+      <audio id="musicPlayer" preload="auto">
+        <!-- <source src="/resources/lost-in-city-lights-145038.mp3" type="audio/mpeg">
+        <source src="/resources/forest-lullaby-110624.mp3" type="audio/mpeg"> -->
+      </audio>
+      <div class="sfonts">
+        <h2>SONG NAME</h2>
+        <p>SINGER</p>
+        <div class="slefts">
+            <span id="starts">00:00</span>
+        </div>
+        <div class="srights">
+            <span id="ends">00:00</span>
+        </div>
+        <div class="xian">
+            <div class="colors"></div>
+        </div>
+        <div class="pics">
+            <div class="plefts">
+                <img src="/resources/Stop_and_play_fill-1.svg" alt="">
+            </div>
+            <div class="pmids">
+                <img src="/resources/Play_fill.svg" alt="">
+            </div>
+            <div class="prights">
+                <img src="/resources/Stop_and_play_fill.svg" alt="">
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/resources/jquery-3.3.1.min.js"></script>
+  <script>
+    const musicList = [
+        {
+          src: '/resources/lost-in-city-lights-145038.mp3',
+          cover: '/resources/cover-1.jpg',
+          name: 'Lost In City Lights',
+          singer: 'Tom Wilson'
+        },
+        {
+          src: '/resources/forest-lullaby-110624.mp3',
+          cover: '/resources/cover-2.jpg',
+          name: 'Forest Lullaby',
+          singer: 'Emily Clark'
+        }];
+      let currentIndex = 0;
+    $(function(){
+      //规范格式
+     function formatTime(seconds) {
+        if (isNaN(seconds)){
+          return '00:00'; // 未加载完成时返回默认值
+        } 
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        // 补零为两位数（如 1 → 01）
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+       // 获取数值（秒为单位，可能是小数）
+      let currentTime = $('#musicPlayer')[0].currentTime; // 当前播放时间（前/当前数值）
+      let totalTime = $('#musicPlayer')[0].duration;     //音频总时长（后/总数值）
+      $('#musicPlayer').on('canplaythrough', function() {
+          const totalTime = $('#musicPlayer')[0].duration;
+          $('#ends').text(formatTime(totalTime)); //显示总时长
+      });
+      $('#musicPlayer').on('timeupdate', function() {
+          const currentTime = $('#musicPlayer')[0].currentTime;
+          const progress = (currentTime / this.duration) * 100;
+          $('.colors').css('width', `${progress}%`);
+          $('#starts').text(formatTime(currentTime)); //显示当前播放时间
+      });
+      loadMusic(currentIndex);
+      $('h2').text(musicList[currentIndex].name);
+      $('p').text(musicList[currentIndex].singer);
+        
+    })
+
+    function loadMusic(index) {
+      const musicFiles = [
+        '/resources/lost-in-city-lights-145038.mp3',
+        '/resources/forest-lullaby-110624.mp3'
+      ];
+      if (index < 0){
+        index = musicList.length - 1;
+      } 
+      if (index >= musicList.length){
+        index = 0;
+      } 
+      currentIndex = index;
+      $('#musicPlayer').attr('src', musicFiles[index]);
+      $('#musicPlayer')[0].load();
+// 重置进度条和时间显示
+      $('.colors').css('width', '0%');
+      $('#starts').text('00:00');
+    }
+    $('.plefts').click(function(){
+      $('.pmids').find('img').attr('src','/resources/Play_fill.svg');
+      loadMusic(currentIndex - 1); 
+      $('h2').text(musicList[currentIndex].name);
+      $('p').text(musicList[currentIndex].singer);
+    })
+    $('.prights').click(function(){
+      $('.pmids').find('img').attr('src','/resources/Play_fill.svg');
+      loadMusic(currentIndex + 1); 
+      $('h2').text(musicList[currentIndex].name);
+      $('p').text(musicList[currentIndex].singer);
+    })
+    $('.pmids').click(function(){
+      let biao=$(this).find('img');
+      let isPlaying;
+      //图标变化
+      //音乐播放暂停
+      if ($('#musicPlayer')[0].paused) { 
+        $('#musicPlayer')[0].play().catch(err => {
+          // 捕获播放限制的错误
+          console.log('播放失败：', err);
+          alert('请先点击页面再尝试播放音乐');
+        });
+        biao.attr('src','/resources/stop.svg');
+        // console.log('no');
+      } else {
+        $('#musicPlayer')[0].pause();
+        biao.attr('src','/resources/Play_fill.svg');
+        // console.log('yes');
+      }
+    })
+    //播放结束后恢复图标
+    $('#musicPlayer').on('ended', function() {
+      $('.pmids').find('img').attr('src', '/resources/Play_fill.svg');
+    });
+  </script>
+</html>

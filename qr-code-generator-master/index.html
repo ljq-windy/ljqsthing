@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <title>QR code generator | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-image: url(resources/qa-bg.jpg);
+      }
+      .mids{
+        text-align: center;
+      }
+      .sheads{
+        margin: 220px auto;
+      }
+      .smids{
+        margin: 30px auto;
+        border: 2px solid #273FA9;
+        width: 400px;
+        height: 50px;
+        background-color: #030617;
+        border-radius: 8px;
+      }
+      .buts{
+        border-radius: 5px;
+        width: 25%;
+        color: white;
+        float: right;
+        margin-top: 3.5px;
+        margin-right: 3.5px;
+        background-color: #273FA9;
+        height: 40px;
+        border: 0;
+      }
+      .ppp{
+        color: white;
+        line-height: 48px;
+        float: left;
+        margin-left: 20px;
+        background-color: #ffffff00;
+        border: 0;
+        width: 65%;
+        /* 取消默认聚焦 */
+        outline: none;
+      }
+      .smids:hover{
+        border-color: #3859ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mids">
+      <div class="sheads">
+        <img src="resources/Logo.svg" alt="">
+        <div class="smids" onclick="changes()">
+          <input type="text" value="Enter an url" class="ppp">
+          <a href="index1.html">
+             <input type="button" class="buts" value="QR code" onclick="transmit(event)">
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="resources/jquery-3.3.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script>
+    function changes(){
+      $('.ppp').val('');
+    }
+    function transmit(e) {
+      let a=$('.ppp').val().trim();
+      console.log(a)
+      if (a==='') {
+        e.preventDefault(); // 阻止超链接的默认跳转行为
+        location.reload(); // 刷新当前页面
+        alert("Cannot be empty!")
+      }else if(a=="Enter an url"){
+        e.preventDefault(); // 阻止超链接的默认跳转行为
+        alert("Please enter a valid URL!")
+      }else{
+        e.preventDefault(); // 阻止超链接的默认跳转行为
+        if (!validateStrictUrl(a)) {
+        // 自动补全https（可选逻辑，提升友好度）
+        const autoCompleteUrl = "https://" + a;
+        // 若只输域名，自动补全https
+          if (validateStrictUrl(autoCompleteUrl)) {
+            alert(`已为你补全URL：${autoCompleteUrl}`);
+            // 可直接将补全后的值赋值给输入框
+            $('.ppp').val(autoCompleteUrl);
+             if (a) {
+              window.location.href = `index1.html?url=${encodeURIComponent(a)}`;
+             }else {
+               alert("URL格式错误，请输入完整地址（如：https://www.example.com）");
+             }
+          }
+       }
+      }
+    }
+    function validateStrictUrl(url) {
+      // 正则规则：强制带http/https/ftp协议
+      const strictRegex = /^(https?:\/\/|ftp:\/\/)([\da-z.-]+)\.([a-z.]{2,6})(:[0-9]{1,5})?(\/[^\s]*)?$/i;
+      return strictRegex.test(url.trim());
+    }
+
+  </script>
+</html>

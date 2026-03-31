@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+	<link rel="stylesheet" href="css/ljq.css">
+    <title>Multi-step Register Form | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        background-color: #121826;
+      }
+
+      .author-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 16px;
+        color: rgb(55, 65, 81);
+      }
+
+      .author-info a {
+        text-decoration: none;
+      }
+
+      #b3{
+        box-shadow:0 0 0 5px  #a165f595;
+        background-color:rgba(143, 129, 233, 1);
+      }
+      span{
+        color: #848484;
+      }
+      .tab li{
+        line-height: 28px;
+      }
+    </style>
+  </head>
+        
+  <body>
+    <div class="bigg">
+      <div class="main">
+        <div id="boo">
+          <div class="tab">
+              <ul>
+                <li>Summary</li>
+                <li class="sma"><span>Name:</span>&nbsp;&nbsp;Emily Johnson</li>
+                <li class="sma"><span>Email:</span>&nbsp;&nbsp;emily@emilyyjohnsonstl.com</li>
+                <li class="sma">
+                 <span>Topics:</span>
+                 <ul id="yvan">
+                    <li class="sma" style="font-size: 14px;margin-top: -35px;line-height: 28px;">User Experience</li>
+                    <li class="sma">Graphic Design</li>
+                 </ul>   
+                </li>
+                <input type="button" value="Continue" class="buttons"/>
+              </ul>
+          </div>
+          <div class="switch">
+            <table>
+              <tr>
+                <th>Step&nbsp;2&nbsp;of&nbsp;&nbsp;3</th>
+                <th>
+                  <div class="an" id="b1"></div>
+                </th>
+                <th>
+                  <div class="an" id="b2"></div>
+                </th>
+                <th>
+                  <div class="an" id="b3"></div>
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <script src="/js/ljq.js"></script>
+  <script>
+    $(".an").mouseenter(
+      function(){
+          $(this).css("box-shadow","0 0 0 5px  #a165f595")
+          $(this).css("background-color","rgba(143, 129, 233, 1)")
+      }
+      ).mouseleave(
+          function(){
+              $(this).css("box-shadow","0 0 0 0 blue")
+              $(this).css("background-color","#212936")
+              $("#b3").css("box-shadow","0 0 0 5px  #a165f595")
+              $("#b3").css("background-color","rgba(143, 129, 233, 1)")
+            }
+      );
+              $("#yvan li").css("list-style","disc")
+  </script>
+</html>
